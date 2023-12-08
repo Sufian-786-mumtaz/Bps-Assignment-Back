@@ -2,6 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const cors = require("cors");
 const app = express();
+const serverless = require("serverless-http");
 // const port = 8001;
 const url = "http://2.233.121.120:1085/energy.php";
 const router = Router();
@@ -15,10 +16,6 @@ router.get("/energy", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-api.use("/api/", router);
-
-// app.listen(port, () => {
-//   console.log(`server is running on port ${port}`);
-// });
-
-export const handler = serverless(app);
+app.use(`/.netlify/functions/api`, router);
+module.exports = app;
+module.exports.handler = serverless(app);
